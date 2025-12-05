@@ -1,137 +1,9 @@
-<?php
-// Inicializar variables de resultado a null
-$resultado_plano = null;
-$resultado_solido = null;
-$error = null;
-
-// --- FUNCIÓN PARA CÁLCULOS DE FIGURAS PLANAS (Área y Perímetro) ---
-if (isset($_POST['calcular_plano']) && isset($_POST['figura_plana'])) {
-    $figura_plana = $_POST['figura_plana'];
-
-    function validar_parametros($params) {
-        foreach ($params as $param) {
-            if (!is_numeric($param) || $param <= 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    switch ($figura_plana) {
-        case 'rectangulo':
-            $b = $_POST['base'] ?? 0;
-            $h = $_POST['altura'] ?? 0;
-            if (validar_parametros([$b, $h])) {
-                $area = $b * $h; 
-                $perimetro = 2 * ($b + $h); 
-                $resultado_plano = "Rectángulo: Área = $area cm², Perímetro = $perimetro cm";
-            } else {
-                $error = "Por favor, ingresa valores numéricos positivos para Base y Altura del Rectángulo.";
-            }
-            break;
-
-        case 'cuadrado':
-            $l = $_POST['lado'] ?? 0;
-            if (validar_parametros([$l])) {
-                $area = $l * $l; 
-                $perimetro = 4 * $l; 
-                $resultado_plano = "Cuadrado: Área = $area cm², Perímetro = $perimetro cm";
-            } else {
-                $error = "Por favor, ingresa un valor numérico positivo para el Lado del Cuadrado.";
-            }
-            break;
-
-        case 'rombo':
-            $D = $_POST['diagonal_mayor'] ?? 0;
-            $d = $_POST['diagonal_menor'] ?? 0;
-            $l = $_POST['lado_rombo'] ?? 0; 
-            if (validar_parametros([$D, $d, $l])) {
-                $area = ($D * $d) / 2; 
-                $perimetro = 4 * $l; 
-                $resultado_plano = "Rombo: Área = $area cm², Perímetro = $perimetro cm";
-            } else {
-                $error = "Por favor, ingresa valores numéricos positivos para Diagonales y Lado del Rombo.";
-            }
-            break;
-
-        case 'romboide':
-            $b = $_POST['base_romboide'] ?? 0;
-            $h = $_POST['altura_romboide'] ?? 0;
-            $l = $_POST['lado_romboide'] ?? 0; 
-            if (validar_parametros([$b, $h, $l])) {
-                $area = $b * $h; 
-                $perimetro = 2 * ($b + $l); 
-                $resultado_plano = "Romboide: Área = $area cm², Perímetro = $perimetro cm";
-            } else {
-                $error = "Por favor, ingresa valores numéricos positivos para Base, Altura y Lado del Romboide.";
-            }
-            break;
-        default:
-            $error = "Selección de figura plana no válida.";
-    }
-}
-
-// --- FUNCIÓN PARA CÁLCULOS DE SÓLIDOS REGULARES (Volumen) ---
-if (isset($_POST['calcular_solido']) && isset($_POST['solido_regular'])) {
-    $solido_regular = $_POST['solido_regular'];
-
-    switch ($solido_regular) {
-        case 'cubo':
-            $l = $_POST['lado_cubo'] ?? 0;
-            if (validar_parametros([$l])) {
-                $volumen = pow($l, 3); 
-                $resultado_solido = "Cubo: Volumen = $volumen cm³";
-            } else {
-                $error = "Por favor, ingresa un valor numérico positivo para el Lado del Cubo.";
-            }
-            break;
-
-        case 'prisma':
-            $Ab = $_POST['area_base_prisma'] ?? 0;
-            $h = $_POST['altura_prisma'] ?? 0;
-            if (validar_parametros([$Ab, $h])) {
-                $volumen = $Ab * $h; 
-                $resultado_solido = "Prisma: Volumen = $volumen cm³";
-            } else {
-                $error = "Por favor, ingresa valores numéricos positivos para Área de la Base (en cm²) y Altura (en cm) del Prisma.";
-            }
-            break;
-
-        case 'piramide':
-            $Ab = $_POST['area_base_piramide'] ?? 0;
-            $h = $_POST['altura_piramide'] ?? 0;
-            if (validar_parametros([$Ab, $h])) {
-                $volumen = (1 / 3) * $Ab * $h; 
-                $volumen_redondeado = round($volumen, 4);
-                $resultado_solido = "Pirámide: Volumen ≈ $volumen_redondeado cm³";
-            } else {
-                $error = "Por favor, ingresa valores numéricos positivos para Área de la Base (en cm²) y Altura (en cm) de la Pirámide.";
-            }
-            break;
-
-        case 'cilindro':
-            $r = $_POST['radio_cilindro'] ?? 0;
-            $h = $_POST['altura_cilindro'] ?? 0;
-            if (validar_parametros([$r, $h])) {
-                $volumen = M_PI * pow($r, 2) * $h; 
-                $volumen_redondeado = round($volumen, 4);
-                $resultado_solido = "Cilindro: Volumen ≈ $volumen_redondeado cm³";
-            } else {
-                $error = "Por favor, ingresa valores numéricos positivos para Radio y Altura del Cilindro.";
-            }
-            break;
-        default:
-            $error = "Selección de sólido no válida.";
-    }
-}
-
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Evidencia GA7-240201528-AA4-EV01: Algoritmo para el cálculo de áreas y volúmenes</title>
+    <title>Trabajo Práctico con Geometría</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f9; display: flex; flex-direction: column; min-height: 100vh;}
         header { background-color: #007bff; color: white; padding: 15px 20px; text-align: center; }
@@ -156,17 +28,15 @@ if (isset($_POST['calcular_solido']) && isset($_POST['solido_regular'])) {
 <header>
     <h1>Trabajo Práctico con Geometría</h1>
     <div class="student-info">
-        Estudiante de Desarrollo Publicitario: Dayelis Maria Rivera Alvarino (Ficha: 304744)
+        Estudiante de Filosofía: **Maria Alejandra Franco Hernandez** (Matrícula: 345325)
     </div>
 </header>
 
 <div class="container">
-    
-    <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
-    <?php endif; ?>
+    <div id="error-message" class="error" style="display:none;"></div>
 
     <script>
+        // Función para mostrar/ocultar los campos de parámetros según la selección
         function mostrarParametros(tipo, seleccion) {
             let params = document.querySelectorAll(`.${tipo}-params`);
             params.forEach(p => p.style.display = 'none');
@@ -175,13 +45,182 @@ if (isset($_POST['calcular_solido']) && isset($_POST['solido_regular'])) {
             if (paramDiv) {
                 paramDiv.style.display = 'block';
             }
+            // Ocultar el resultado y el error al cambiar la figura
+            document.getElementById(`${tipo}-resultado`).style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+        }
+
+        // Función de validación de entradas
+        function validar(params) {
+            for (let param of params) {
+                if (param === null || param === "" || isNaN(param) || Number(param) <= 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // --- FUNCIÓN PARA CÁLCULOS DE FIGURAS PLANAS (Área y Perímetro) ---
+        function calcularPlano(event) {
+            event.preventDefault();
+            
+            const figura = document.getElementById('figura_plana').value;
+            const resultadoDiv = document.getElementById('plano-resultado');
+            const errorDiv = document.getElementById('error-message');
+            
+            errorDiv.style.display = 'none';
+            resultadoDiv.style.display = 'none';
+
+            let resultado = "";
+            let area, perimetro;
+
+            switch (figura) {
+                case 'rectangulo':
+                    const b_rect = parseFloat(document.querySelector('#rectangulo-params [name="base"]').value);
+                    const h_rect = parseFloat(document.querySelector('#rectangulo-params [name="altura"]').value);
+                    if (validar([b_rect, h_rect])) {
+                        area = b_rect * h_rect; 
+                        perimetro = 2 * (b_rect + h_rect); 
+                        resultado = `Rectángulo: Área = ${area.toFixed(2)} cm², Perímetro = ${perimetro.toFixed(2)} cm`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa valores numéricos positivos para Base y Altura del Rectángulo.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+
+                case 'cuadrado':
+                    const l_cuad = parseFloat(document.querySelector('#cuadrado-params [name="lado"]').value);
+                    if (validar([l_cuad])) {
+                        area = l_cuad * l_cuad; 
+                        perimetro = 4 * l_cuad; 
+                        resultado = `Cuadrado: Área = ${area.toFixed(2)} cm², Perímetro = ${perimetro.toFixed(2)} cm`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa un valor numérico positivo para el Lado del Cuadrado.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+
+                case 'rombo':
+                    const D_romb = parseFloat(document.querySelector('#rombo-params [name="diagonal_mayor"]').value);
+                    const d_romb = parseFloat(document.querySelector('#rombo-params [name="diagonal_menor"]').value);
+                    const l_romb = parseFloat(document.querySelector('#rombo-params [name="lado_rombo"]').value);
+                    if (validar([D_romb, d_romb, l_romb])) {
+                        area = (D_romb * d_romb) / 2; 
+                        perimetro = 4 * l_romb; 
+                        resultado = `Rombo: Área = ${area.toFixed(2)} cm², Perímetro = ${perimetro.toFixed(2)} cm`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa valores numéricos positivos para Diagonales y Lado del Rombo.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+
+                case 'romboide':
+                    const b_romboid = parseFloat(document.querySelector('#romboide-params [name="base_romboide"]').value);
+                    const h_romboid = parseFloat(document.querySelector('#romboide-params [name="altura_romboide"]').value);
+                    const l_romboid = parseFloat(document.querySelector('#romboide-params [name="lado_romboide"]').value);
+                    if (validar([b_romboid, h_romboid, l_romboid])) {
+                        area = b_romboid * h_romboid; 
+                        perimetro = 2 * (b_romboid + l_romboid); 
+                        resultado = `Romboide: Área = ${area.toFixed(2)} cm², Perímetro = ${perimetro.toFixed(2)} cm`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa valores numéricos positivos para Base, Altura y Lado del Romboide.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+                default:
+                    errorDiv.textContent = "Error: Selecciona una figura plana válida.";
+                    errorDiv.style.display = 'block';
+                    return;
+            }
+
+            resultadoDiv.textContent = resultado;
+            resultadoDiv.style.display = 'block';
+        }
+
+        // --- FUNCIÓN PARA CÁLCULOS DE SÓLIDOS REGULARES (Volumen) ---
+        function calcularSolido(event) {
+            event.preventDefault();
+
+            const solido = document.getElementById('solido_regular').value;
+            const resultadoDiv = document.getElementById('solido-resultado');
+            const errorDiv = document.getElementById('error-message');
+            
+            errorDiv.style.display = 'none';
+            resultadoDiv.style.display = 'none';
+
+            let resultado = "";
+            let volumen;
+
+            switch (solido) {
+                case 'cubo':
+                    const l_cubo = parseFloat(document.querySelector('#cubo-params [name="lado_cubo"]').value);
+                    if (validar([l_cubo])) {
+                        volumen = Math.pow(l_cubo, 3);
+                        resultado = `Cubo: Volumen = ${volumen.toFixed(2)} cm³`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa un valor numérico positivo para el Lado del Cubo.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+
+                case 'prisma':
+                    const Ab_prisma = parseFloat(document.querySelector('#prisma-params [name="area_base_prisma"]').value);
+                    const h_prisma = parseFloat(document.querySelector('#prisma-params [name="altura_prisma"]').value);
+                    if (validar([Ab_prisma, h_prisma])) {
+                        volumen = Ab_prisma * h_prisma;
+                        resultado = `Prisma: Volumen = ${volumen.toFixed(2)} cm³`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa valores numéricos positivos para Área de la Base (cm²) y Altura (cm) del Prisma.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+
+                case 'piramide':
+                    const Ab_piram = parseFloat(document.querySelector('#piramide-params [name="area_base_piramide"]').value);
+                    const h_piram = parseFloat(document.querySelector('#piramide-params [name="altura_piramide"]').value);
+                    if (validar([Ab_piram, h_piram])) {
+                        volumen = (1 / 3) * Ab_piram * h_piram;
+                        resultado = `Pirámide: Volumen ≈ ${volumen.toFixed(2)} cm³`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa valores numéricos positivos para Área de la Base (cm²) y Altura (cm) de la Pirámide.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+
+                case 'cilindro':
+                    const r_cil = parseFloat(document.querySelector('#cilindro-params [name="radio_cilindro"]').value);
+                    const h_cil = parseFloat(document.querySelector('#cilindro-params [name="altura_cilindro"]').value);
+                    if (validar([r_cil, h_cil])) {
+                        volumen = Math.PI * Math.pow(r_cil, 2) * h_cil;
+                        resultado = `Cilindro: Volumen ≈ ${volumen.toFixed(2)} cm³`;
+                    } else {
+                        errorDiv.textContent = "Error: Ingresa valores numéricos positivos para Radio y Altura del Cilindro.";
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    break;
+                default:
+                    errorDiv.textContent = "Error: Selecciona un sólido regular válido.";
+                    errorDiv.style.display = 'block';
+                    return;
+            }
+
+            resultadoDiv.textContent = resultado;
+            resultadoDiv.style.display = 'block';
         }
     </script>
 
     <h2>Área y Perímetro de Figuras Planas (Unidades en cm)</h2>
-    <form method="post" action="">
+    <form onsubmit="calcularPlano(event)">
         <label for="figura_plana">Selecciona la figura:</label>
-        <select id="figura_plana" name="figura_plana" onchange="mostrarParametros('plana', this.value)" required>
+        <select id="figura_plana" onchange="mostrarParametros('plana', this.value)" required>
             <option value="">-- Seleccionar --</option>
             <option value="rectangulo">Rectángulo</option>
             <option value="cuadrado">Cuadrado</option>
@@ -210,17 +249,15 @@ if (isset($_POST['calcular_solido']) && isset($_POST['solido_regular'])) {
             <label>Lado (l) [cm] (*Para Perímetro):</label><input type="number" name="lado_romboide" step="any" min="0.001">
         </div>
 
-        <button type="submit" name="calcular_plano">Calcular Área y Perímetro</button>
+        <button type="submit">Calcular Área y Perímetro</button>
     </form>
 
-    <?php if ($resultado_plano): ?>
-        <div class="resultado"><?php echo $resultado_plano; ?></div>
-    <?php endif; ?>
+    <div id="plano-resultado" class="resultado" style="display:none;"></div>
 
     <h2>Volumen de Sólidos Regulares (Unidades en cm³)</h2>
-    <form method="post" action="">
+    <form onsubmit="calcularSolido(event)">
         <label for="solido_regular">Selecciona el sólido:</label>
-        <select id="solido_regular" name="solido_regular" onchange="mostrarParametros('solido', this.value)" required>
+        <select id="solido_regular" onchange="mostrarParametros('solido', this.value)" required>
             <option value="">-- Seleccionar --</option>
             <option value="cubo">Cubo</option>
             <option value="prisma">Prisma</option>
@@ -247,17 +284,15 @@ if (isset($_POST['calcular_solido']) && isset($_POST['solido_regular'])) {
             <label>Altura (h) [cm]:</label><input type="number" name="altura_cilindro" step="any" min="0.001">
         </div>
 
-        <button type="submit" name="calcular_solido">Calcular Volumen</button>
+        <button type="submit">Calcular Volumen</button>
     </form>
 
-    <?php if ($resultado_solido): ?>
-        <div class="resultado"><?php echo $resultado_solido; ?></div>
-    <?php endif; ?>
+    <div id="solido-resultado" class="resultado" style="display:none;"></div>
 
 </div>
 
 <footer>
-    Estudiante de Desarrollo Publicitario | Dayelis Maria Rivera Alvarino (Ficha: 304744)
+    **Trabajo Práctico con Geometría** | Maria Alejandra Franco Hernandez (345325)
 </footer>
 </body>
 </html>
